@@ -24,23 +24,23 @@ interface IUnitOfWork
 
 abstract class UnitOfWorkBase : IUnitOfWork
 {
-	protected IReadOnlyDictionary<Type, object> _repositories;
+	protected IReadOnlyDictionary<Type, IRepository> _repositories;
 	protected readonly DbContext _context;
 	
-	protected UnitOfWorkBase(DbContext context, params object[] repositories)
+	protected UnitOfWorkBase(DbContext context, params IRepository[] repositories)
 	{
 		_context = context ?? throw new ArgumentNullException(nameof(context));
-		if(repositories == null || !repositories.Any())
+		if(repositories?.Any(r => r == null) ?? true)
 		{
 			throw new ArgumentException("Parameter is null or empty.", nameof(repositories));
 		}
 
-		_repositories = new Dictionary<Type, object>(repositories.ToDictionary(r => r.GetType()));
+		_repositories = new Dictionary<Type, IRepository>(repositories.ToDictionary(r => r.GetType()));
 	}
 	
 	public T Repository<T>() where T : class, IRepository
 	{
-		if(_repositories.TryGetValue(typeof(T), out object repository))
+		if(_repositories.TryGetValue(typeof(T), out IRepository repository))
 		{
 			return repository as T ??
 				throw new ApplicationException($"Repository not of type {typeof(T).Name}.");
