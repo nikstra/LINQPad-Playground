@@ -30,7 +30,7 @@ abstract class UnitOfWorkBase : IUnitOfWork
 	protected UnitOfWorkBase(DbContext context, params IRepository[] repositories)
 	{
 		_context = context ?? throw new ArgumentNullException(nameof(context));
-		if(repositories?.Any(r => r == null) ?? true)
+		if((!repositories?.Any() ?? true) || repositories.Any(r => r == null))
 		{
 			throw new ArgumentException("Parameter is null or empty.", nameof(repositories));
 		}
