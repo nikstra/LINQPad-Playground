@@ -55,20 +55,20 @@ public static class IEnumerableExtensions
 		using(var enumerator = @this.GetEnumerator())
 		{
 			bool isFirst = false;
-		    if(enumerator.MoveNext())
+			if(enumerator.MoveNext())
 			{
 				isFirst = true;
-		        T last = enumerator.Current;
-		        while(enumerator.MoveNext())
+				T last = enumerator.Current;
+				while(enumerator.MoveNext())
 				{
-		            // here, "last" is a non-final value; do something with "last"
+					// here, "last" is a non-final value; do something with "last"
 					yield return (last, isFirst, false);
 					isFirst = false;
-		            last = enumerator.Current;
-		        }
-		        // here, "last" is the FINAL one; do something else with "last"
+					last = enumerator.Current;
+				}
+				// here, "last" is the FINAL one; do something else with "last"
 				yield return (last, false, true);
-		    }
+			}
 		}
 	}
 	
@@ -78,20 +78,20 @@ public static class IEnumerableExtensions
 	//	using(enumerator as IDisposable)
 	//	{
 	//		bool isFirst = false;
-	//	    if(enumerator.MoveNext())
+	//		if(enumerator.MoveNext())
 	//		{
 	//			isFirst = true;
-	//	        object last = enumerator.Current;
-	//	        while(enumerator.MoveNext())
+	//			object last = enumerator.Current;
+	//			while(enumerator.MoveNext())
 	//			{
-	//	            // here, "last" is a non-final value; do something with "last"
+	//				// here, "last" is a non-final value; do something with "last"
 	//				yield return (last, isFirst, false);
 	//				isFirst = false;
-	//	            last = enumerator.Current;
-	//	        }
-	//	        // here, "last" is the FINAL one; do something else with "last"
+	//				last = enumerator.Current;
+	//			}
+	//			// here, "last" is the FINAL one; do something else with "last"
 	//			yield return (last, false, true);
-	//	    }
+	//		}
 	//	}
 	//}
 }
